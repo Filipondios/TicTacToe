@@ -30,7 +30,7 @@ This game has 3 different difficulty levels incorporated, which are:
   - <b>`Impossible`</b>: This is a AI (kind of). The machine generates all the possible moves that it can do or you can do and it explores them. Then, the
     AI selects the move that has the most promising future. Deffinetly, its impossible to beat this AI but you can tie. 
 
-#### <ins>The current finished levels are: `Easy`</ins>
+#### <ins>The current finished levels are:</ins> `Easy`, `Normal`
 
 <a name="download"></a>
 
