@@ -32,16 +32,15 @@ public class NormalCore extends Core {
 		// Generar posibles celdas donde se haga un movimiento.
 		// Debe ser alrededor de Board.last o si no hay hueco, en una posicion del
 		// tablero aleatoria
-		System.out.println("xasnoi");
 		
 		target = null;
 		int last = Board.userLastMove.boardPosition;
 		ArrayList<Integer> candidates = new ArrayList<>(Arrays.asList(last-1,last+1,last-3,last+3));
 				
+		System.out.println(candidates);
+		
 		for (Integer index : candidates) {
-			
-			target = getBoard().getChips().get(index);
-			
+						
 			try { target = getBoard().getChips().get(index); }
 			catch (Exception e) { continue; }
 			
@@ -124,7 +123,6 @@ public class NormalCore extends Core {
 			
 			else if(actual.owner == Ownership.PLAYER) player++;
 			else ai++;
-			System.out.println("---");
 		}		
 		return ((ai==2 || player==2) && gaps==1)? target : null;
 	}
