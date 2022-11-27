@@ -10,7 +10,7 @@ import app.frames.MainFrame;
  * @author Filipondios
  * @version 18.11.2022
  */
-public final class EasyCore extends Core {
+public final class EasyCore implements Core {
 
 	@Override
 	public void makeMove() {
