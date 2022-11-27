@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import app.frames.MainFrame;
+
 /**
  * <p>
  * Clase que simula una <i>celda</i> del tablero del juego de 3 en raya.
@@ -17,7 +19,8 @@ import javax.swing.border.LineBorder;
  * @author Filipondios
  * @version 19.11.2022
  */
-public class BoardChip extends JPanel {
+@SuppressWarnings("serial")
+public final class BoardChip extends JPanel {
 
 	/**
 	 * <p>
@@ -42,33 +45,32 @@ public class BoardChip extends JPanel {
 		this.owner = Ownership.NONE;
 		this.boardPosition = position;
 
-		this.setBorder(new LineBorder(new Color(209, 177, 154))); // light brown
-		this.setBackground(new Color(60, 63, 65)); // light black
+		this.setBorder(new LineBorder(new Color(209, 177, 154)));
+		this.setBackground(new Color(60, 63, 65));
 
 		this.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 
-				
 				// Comprobar que la casilla no este ocupada
 				if (owner != Ownership.NONE)
 					return;
 
 				/* Marcar esta casilla de la propiedad del jugador */
 				setChip(Ownership.PLAYER);
-				Board.userLastMove = mirror();
-				
+				MainFrame.setLastMove(mirror());
+								
 				/* Evaluar si el jugador ha hecho una jugada ganadora */
-				int board_value = Board.evaluate();
+				int board_value = MainFrame.evaluateBoard();
 				if (board_value != 0)
 					endGame(board_value);
-				if (Board.boardIsFull())
+				if (MainFrame.boardIsFull())
 					endGame(0);
 
 				/* Marcar esta casilla de la propiedad de la IA */
-				Board.game_core.makeMove();
+				MainFrame.game_core.makeMove();
 
 				/* Evaluar si la IA ha hecho una jugada ganadora */
-				board_value = Board.evaluate();
+				board_value = MainFrame.evaluateBoard();
 				if (board_value != 0)
 					endGame(board_value);
 			}
@@ -115,7 +117,7 @@ public class BoardChip extends JPanel {
 		return setChip(Chip);
 	}
 	
-	public BoardChip mirror() {
+	private BoardChip mirror() {
 		return this;
 	}
 }
