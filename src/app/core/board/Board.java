@@ -1,23 +1,19 @@
 package app.core.board;
 
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
- * <p>
- * Clase que simula el comportamiento de un tablero de 3 en raya. Para
- * representar cada una de las <i>celdas</i>
- * del tablero, se usa la clase {@link BoardChip}. Entiendase celdas por cada
- * uno de los espacios cuadrados del
- * tablero que los jugadores pueden marcar.
- * </p>
+ * <p> Class that simulates the behavior of a Tic-Tac-Toe board. To render each
+ * of the <code>cells</code> from the board, the {@link BoardCell} class is
+ * used. Understand cells for each one of the square spaces of the board
+ * that players can mark. Both the <code>BoardCell</code> class and <code>this</code>
+ * extends {@link JPanel}, so a <code>Board</code> Object contains 9 <code>Boardchips</code>
+ * (Jpanels) inside.</p>
  * 
- * <p>
- * La distribucion de las celdas, ordenadas numericamente son:
- * </p>
+ * <p> The cells are distributed in the <code>Board</code> numerically like this: </p>
  * 
- * <table class="tftable" border="5">
+ * <table border="5">
  * <tr>
  * <th>&emsp; <strong>0</strong></th>
  * <th>&emsp; <strong>1</strong></th>
@@ -35,60 +31,58 @@ import javax.swing.JPanel;
  * </tr>
  * </table>
  * 
- * <p>
- * Esta informacion es util para saber en que orden se guardan el el
- * {@link ArrayList} de celdas del tablero
- * y con que indices se puede acceder a cada una de ellas.
- * </p>
+ * <p> This information is useful to know in which order are the board cells distributed 
+ * in the array of and with which indices each of them can be accessed. </p>
  * 
  * @author Filipondios.
- * @version 19.11.2022
+ * @version 27.11.2022
+ * @see BoardCell
  */
 @SuppressWarnings("serial")
 public final class Board extends JPanel {
-	
-	/** Celdas del tablero */
-	private BoardChip[] chips = new BoardChip[9];
-	
-	/** Last chip touched by the user */
-	public BoardChip userLastMove;
 
-	/** Crea un tablero y añade las 9 celdas */
+	/** <p>Array with the <code>(9)</code> Board cells</p> */
+	private final BoardCell[] cells = new BoardCell[9];
+	
+	/** <p>Last chip touched/marked by the user</p> */
+	public BoardCell user_last_move;
+
+	/** <p>Creates a Board and adds to it 9 cells</p> */
 	public Board() {
-		super(new GridLayout(3, 3));
-
+		super(new GridLayout(3,3));
+		
 		for (int i = 0; i < 9; i++) {
-			chips[i] = new BoardChip(i);
-			this.add(chips[i]); // Añadir chip al Panel
+			cells[i] = new BoardCell(i);
+			this.add(cells[i]);
 		}
 	}
 
 	/**
-	 * Funcion que evalua el estado del tablero actual.
-	 * 
-	 * @return 1 si la IA gana en el estado actual de tablero, -1 si esta pierde
-	 *         (gana el usuario) y 0 si nadie gana.
-	 */
+	* <p>Function that evaluates the state of the current board.</p>
+	* 
+	* @return 1 if the AI ​​wins in the current board state, -1 if the AI ​​loses
+	* (the user wins) and 0 if no one wins.
+	*/
 	public int evaluate() {
 
-		// Diagonal izquierda arriba - derecha abajo
+		// Diagonal left up - right down
 		int result = evaluateInStep(4, 4);
 		if (result != 0)
 			return result;
 
-		// Diagonal izquierda arriba - derecha abajo
+		// Diagonal right up - left down
 		result = evaluateInStep(4, 2);
 		if (result != 0)
 			return result;
 
-		// Todas las filas
+		// All the rows
 		for (int i = 1; i <= 7; i += 3) {
 			result = evaluateInStep(i, 1);
 			if (result != 0)
 				return result;
 		}
 
-		// Todas las columnas
+		// All the columns
 		for (int i = 3; i <= 5; i += 1) {
 			result = evaluateInStep(i, 3);
 			if (result != 0)
@@ -98,21 +92,20 @@ public final class Board extends JPanel {
 	}
 
 	/**
-	 * Funcion privada que evalua si tres posiciones contiguas de un tablero tienen
-	 * el mismo valor. Para ello,
-	 * se debe pasar por parametro la segunda posicion a evaluar, y a que distancia
-	 * esta esta de la tercera.
-	 * 
-	 * @param start Segunda celda a evaluar.
-	 * @param step  Salto hasta la siguiente celda (distancia).
-	 * @return 1 si la IA gana en el estado actual de tablero, -1 si esta pierde
-	 *         (gana el usuario), 0 si nadie gana
-	 *         y -2 si hay un empate total (no hay mas casillas libres y hay empate)
-	 */
+	* <p>Private function that evaluates if three contiguous positions of a board 
+	* have the same value. To do so, the second position to be evaluated must be 
+	* passed by parameter, and at what distance this is from the third.</p>
+	*
+	* @param start Second cell to evaluate.
+	* @param step Step to the next cell (distance).
+	* @return 1 if the AI ​​wins in the current board state, -1 if the AI ​​loses (user
+	* wins), 0 if nobody wins and -2 if there is a total tie (there are no more 
+	* free cells and there is a tie)
+	*/
 	private int evaluateInStep(int start, int step) {
 		for (int i = start; i <= step + start; i += step) {
-			Ownership pre_owner = this.chips[i-step].owner;
-			if (pre_owner == Ownership.NONE || this.chips[i].owner != pre_owner)
+			Ownership pre_owner = this.cells[i-step].owner;
+			if (pre_owner == Ownership.NONE || this.cells[i].owner != pre_owner)
 				return 0;
 			if (i == start + step)
 				return (pre_owner == Ownership.AI) ? 1 : -1;
@@ -121,34 +114,57 @@ public final class Board extends JPanel {
 	}
 
 	/**
-	 * <p>
-	 * Marca una celda que ha sido ocupada por un jugador.
-	 * </p>
-	 * 
-	 * @param tile_number numero de celda dentro del tablero.
-	 * @param Chip        Constante del Enum {@link BoardChip} que identifica que jugador
-	 *                    ha ocupado la celda.
-	 */
+	* <p> Marks a cell that has been occupied by a player.</p>
+	* 
+	* @param tile_number cell number inside the tile.
+	* @param Chip Enum constant {@link BoardCell} that identifies which player
+	* has occupied the cell.
+	*/
 	public int markTile(int tile_number, Ownership Chip) {
-		return chips[tile_number].setChip(Chip);
+		return cells[tile_number].setCell(Chip);
 	}
 
+	/**
+	 * <p>Function that checks if the board is full (There is no <code>BoardCell</code>
+	 * that has no owner (enum owner=NONE)). Usefull if we want to check if there is
+	 * a tie in the actual game.</p>
+	 * 
+	 * @return True if the board is full, false if don't.
+	 */
 	public boolean isFull() {
-		for (BoardChip boardChip : chips)
-			if (boardChip.owner == Ownership.NONE)
+		for (BoardCell boardCell : cells)
+			if (boardCell.owner == Ownership.NONE)
 				return false;
 		return true;
 	}
 	
-	public BoardChip getChip(int index) {
-		return this.chips[index];
+	/**
+	 * <p>Function that gets a cell from the board.</p>
+	 * 
+	 * @param index Index of the cell in the actual <code>Board</code>
+	 * @return Cell with a specific index from the board.
+	 */
+	public BoardCell getChip(int index) {
+		return this.cells[index];
 	}
 	
-	public void makeLastMove(BoardChip last_move) {
-		this.userLastMove = last_move;
+	/**
+	 * <p>Function that updates the last move that the user did. The move is
+	 * "saved" updating a reference to the last cell that the user touched.</p>
+	 * 
+	 * @param last_move Pointer to the last cell that the user touched.
+	 */
+	public void makeLastMove(BoardCell last_move) {
+		this.user_last_move = last_move;
 	}
 	
-	public BoardChip getLastMove() {
-		return this.userLastMove;
+	/**
+	 * <p>Last move getter.</p>
+	 * 
+	 * @return Returns a pointer/reference of type {@link BoardCell} that is the
+	 * user's last move.
+	 */
+	public BoardCell getLastMove() {
+		return this.user_last_move;
 	}
 }
