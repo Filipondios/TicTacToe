@@ -1,7 +1,12 @@
-# Bin dir
+# Bin dirs
 /bin/
+/out/
 
 # Eclipse settings
 /.settings/
 .classpath
 .project
+
+# IntelliJ settings
+/.idea/
+TicTacToe.iml
