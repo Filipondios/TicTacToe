@@ -1,17 +1,22 @@
 package app.core.engine;
 
-public abstract class Core {
+/**
+ * <p>Interface that indicates how a Core must handle the calculations and requests
+ * of a game board. It has a main function that calculates and performs the
+ * moves that a core sees as the "best".</p>
+ * 
+ * @author Filipondios
+ * @version 27.11.2022
+ * @see #makeMove()
+ */
+public interface Core {
 
 	/**
-	 * Funcion principal de un <i>Core</i>. Debe seguir los siguientes
-	 * requisitos:<br>
-	 * &emsp; --> Controlar que el usuario no pueda tocar el tablero mientras se
-	 * realizan calculos <br>
-	 * &emsp; --> Calcular movimiento <br>
-	 * &emsp; --> Modificar el tablero tras realizar calculos
-	 * </p>
-	 * 
-	 * @param board Tablero en el que se va a hacer el movimiento.
+	 * <p>Principal function of a Core. A Core must follow the next requirements:</p>
+	 * <ul>
+  	 * 	<li>Calculate movement on the board</li>
+  	 *	<li>Modify the dashboard after performing calculations</li>
+	 * </ul> 
 	 */
-	public abstract void makeMove();
+	public void makeMove();
 }
