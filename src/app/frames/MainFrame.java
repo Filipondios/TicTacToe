@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import app.core.board.Board;
-import app.core.board.BoardChip;
+import app.core.board.BoardCell;
 import app.core.engine.Core;
 
 @SuppressWarnings("serial")
@@ -18,7 +18,7 @@ public final class MainFrame extends JFrame {
 			final Toolkit screen = Toolkit.getDefaultToolkit();
 			final Dimension screen_size = screen.getScreenSize();
 	
-			this.setSize(screen_size.width/5, screen_size.width/5);		
+			this.setSize(screen_size.width>>2, screen_size.width>>2);		
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.add(game_board = new Board());
@@ -36,15 +36,15 @@ public final class MainFrame extends JFrame {
 			return game_board.isFull();
 		}
 		
-		public static BoardChip getChipFromBoard(int index) {
+		public static BoardCell getChipFromBoard(int index) {
 			return game_board.getChip(index);
 		}
 		
-		public static void setLastMove(BoardChip chip) {
+		public static void setLastMove(BoardCell chip) {
 			game_board.makeLastMove(chip);
 		}
 		
-		public static BoardChip getLastMove() {
-			return game_board.userLastMove;
+		public static BoardCell getLastMove() {
+			return game_board.user_last_move;
 		}
 }
