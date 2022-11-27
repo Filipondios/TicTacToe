@@ -3,7 +3,6 @@ package app.core.board;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import app.core.engine.Core;
 
 /**
  * <p>
@@ -20,19 +19,19 @@ import app.core.engine.Core;
  * 
  * <table class="tftable" border="5">
  * <tr>
- * <th>&emsp; 0</th>
- * <th>&emsp; 1</th>
- * <th>&emsp; 2</th>
+ * <th>&emsp; <strong>0</strong></th>
+ * <th>&emsp; <strong>1</strong></th>
+ * <th>&emsp; <strong>2</strong></th>
  * </tr>
  * <tr>
- * <td>&emsp; 3</td>
- * <td>&emsp; 4</td>
- * <td>&emsp; 5</td>
+ * <td>&emsp; <strong>3</strong></td>
+ * <td>&emsp; <strong>4</strong></td>
+ * <td>&emsp; <strong>5</strong></td>
  * </tr>
  * <tr>
- * <td>&emsp; 6</td>
- * <td>&emsp; 7</td>
- * <td>&emsp; 8</td>
+ * <td>&emsp; <strong>6</strong></td>
+ * <td>&emsp; <strong>7</strong></td>
+ * <td>&emsp; <strong>8</strong></td>
  * </tr>
  * </table>
  * 
@@ -45,25 +44,22 @@ import app.core.engine.Core;
  * @author Filipondios.
  * @version 19.11.2022
  */
-public class Board extends JPanel {
-
-	/** {@link ArrayList} con las celdas del tablero 3x3 : 9 celdas en total */
-	private static ArrayList<BoardChip> chips = new ArrayList<>(9);
-
-	/** Game engine of the board */
-	public static Core game_core;
+@SuppressWarnings("serial")
+public final class Board extends JPanel {
+	
+	/** Celdas del tablero */
+	private BoardChip[] chips = new BoardChip[9];
 	
 	/** Last chip touched by the user */
-	public static BoardChip userLastMove = null;
+	public BoardChip userLastMove;
 
 	/** Crea un tablero y añade las 9 celdas */
 	public Board() {
 		super(new GridLayout(3, 3));
 
 		for (int i = 0; i < 9; i++) {
-			BoardChip chip = new BoardChip(i);
-			this.add(chip); // Añadir chip al Panel
-			chips.add(chip); // Añadir chip a la lista
+			chips[i] = new BoardChip(i);
+			this.add(chips[i]); // Añadir chip al Panel
 		}
 	}
 
@@ -73,7 +69,7 @@ public class Board extends JPanel {
 	 * @return 1 si la IA gana en el estado actual de tablero, -1 si esta pierde
 	 *         (gana el usuario) y 0 si nadie gana.
 	 */
-	public static int evaluate() {
+	public int evaluate() {
 
 		// Diagonal izquierda arriba - derecha abajo
 		int result = evaluateInStep(4, 4);
@@ -113,10 +109,10 @@ public class Board extends JPanel {
 	 *         (gana el usuario), 0 si nadie gana
 	 *         y -2 si hay un empate total (no hay mas casillas libres y hay empate)
 	 */
-	private static int evaluateInStep(int start, int step) {
+	private int evaluateInStep(int start, int step) {
 		for (int i = start; i <= step + start; i += step) {
-			Ownership pre_owner = chips.get(i - step).owner;
-			if (pre_owner == Ownership.NONE || chips.get(i).owner != pre_owner)
+			Ownership pre_owner = this.chips[i-step].owner;
+			if (pre_owner == Ownership.NONE || this.chips[i].owner != pre_owner)
 				return 0;
 			if (i == start + step)
 				return (pre_owner == Ownership.AI) ? 1 : -1;
@@ -130,45 +126,29 @@ public class Board extends JPanel {
 	 * </p>
 	 * 
 	 * @param tile_number numero de celda dentro del tablero.
-	 * @param Chip        Constante del Enum {@link Chip} que identifica que jugador
+	 * @param Chip        Constante del Enum {@link BoardChip} que identifica que jugador
 	 *                    ha ocupado la celda.
 	 */
 	public int markTile(int tile_number, Ownership Chip) {
-		return chips.get(tile_number).setChip(Chip);
+		return chips[tile_number].setChip(Chip);
 	}
 
-	public static boolean boardIsFull() {
+	public boolean isFull() {
 		for (BoardChip boardChip : chips)
 			if (boardChip.owner == Ownership.NONE)
 				return false;
 		return true;
 	}
-
-	/**
-	 * Asigna un Core de dificultad al tablero de la partida.
-	 * 
-	 * @param core Valor de tipo {@link Core} que se quiere asignar al tablero de la
-	 *             partida.
-	 */
-	public void setCore(Core core) {
-		game_core = core;
+	
+	public BoardChip getChip(int index) {
+		return this.chips[index];
 	}
-
-	public static ArrayList<BoardChip> getChips() {
-		return chips;
+	
+	public void makeLastMove(BoardChip last_move) {
+		this.userLastMove = last_move;
 	}
-
-	/**
-	 * Esta variable determina si el usuario puede tocar el tablero. Util para
-	 * impedir que
-	 * mientras que la IA está procesando, el usuario avance en el tablero.
-	 */
-	// public static boolean board_is_touchable = true;
-
-	/** Cambia el valor de touchable al modo contrario. */
-	/*
-	 * public void changeTouchMode() {
-	 * board_is_touchable = !board_is_touchable;
-	 * }
-	 */
+	
+	public BoardChip getLastMove() {
+		return this.userLastMove;
+	}
 }
