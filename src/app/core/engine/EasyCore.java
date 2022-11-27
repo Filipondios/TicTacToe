@@ -1,7 +1,7 @@
 package app.core.engine;
 
-import app.core.board.Board;
 import app.core.board.Ownership;
+import app.frames.MainFrame;
 
 /**
  * Core que se encarga del modo de juego facil. Calcula una posicion del tablero
@@ -10,17 +10,7 @@ import app.core.board.Ownership;
  * @author Filipondios
  * @version 18.11.2022
  */
-public class EasyCore extends Core {
-
-	/**
-	 * Crea un EasyCore (core de dificultad facil) y asicia a este un tablero.
-	 * 
-	 * @param board Tablero donde se van a realizar todos los movimientos 
-	 * 				durante la partida.
-	 */
-	public EasyCore(Board board) {
-		super(board);
-	}
+public final class EasyCore extends Core {
 
 	@Override
 	public void makeMove() {
@@ -29,8 +19,8 @@ public class EasyCore extends Core {
 
 		while (let) { // Mientas la casilla calculada este ocupada, seguir el loop
 			chip = (int) (Math.random() * 8); // Generar casilla del tablero aleatoria
-			let = (getBoard().markTile(chip, Ownership.AI) == -1) ? true : false; // Comprobar si esta ocupada
+			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1) ? true : false; // Comprobar si esta ocupada
 		}
-		getBoard().markTile(chip, Ownership.AI); // Marcar casilla como IA (machine)
+		MainFrame.game_board.markTile(chip, Ownership.AI); // Marcar casilla como IA (machine)
 	}
 }
