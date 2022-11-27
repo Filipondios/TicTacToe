@@ -2,22 +2,11 @@ package app.core.engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import app.core.board.Board;
 import app.core.board.BoardChip;
 import app.core.board.Ownership;
+import app.frames.MainFrame;
 
-public class NormalCore extends Core {
-
-	/**
-	 * Crea un NormalCore (core de dificultad normal) y asicia a este un tablero.
-	 * 
-	 * @param board Tablero donde se van a realizar todos los movimientos 
-	 * 				durante la partida.
-	 */
-	public NormalCore(Board board) {
-		super(board);
-	}
+public final class NormalCore extends Core {
 
 	@Override
 	public void makeMove() {
@@ -34,14 +23,12 @@ public class NormalCore extends Core {
 		// tablero aleatoria
 		
 		target = null;
-		int last = Board.userLastMove.boardPosition;
+		int last = MainFrame.getLastMove().boardPosition;
 		ArrayList<Integer> candidates = new ArrayList<>(Arrays.asList(last-1,last+1,last-3,last+3));
-				
-		System.out.println(candidates);
-		
+						
 		for (Integer index : candidates) {
 						
-			try { target = getBoard().getChips().get(index); }
+			try { target = MainFrame.getChipFromBoard(index); }
 			catch (Exception e) { continue; }
 			
 			if(target.owner == Ownership.NONE) {
@@ -58,9 +45,9 @@ public class NormalCore extends Core {
 
 		while (let) { // Mientas la casilla calculada este ocupada, seguir el loop
 			chip = (int) (Math.random() * 8); // Generar casilla del tablero aleatoria
-			let = (getBoard().markTile(chip, Ownership.AI) == -1) ? true : false; // Comprobar si esta ocupada
+			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1) ? true : false; // Comprobar si esta ocupada
 		}
-		getBoard().markTile(chip, Ownership.AI); // Marcar casilla como IA (machine)
+		MainFrame.game_board.markTile(chip, Ownership.AI); // Marcar casilla como IA (machine)
 	}
 
 	/**
@@ -114,7 +101,7 @@ public class NormalCore extends Core {
 		int gaps = 0, player = 0, ai = 0;
 		
 		for (int i=start; i<=start+step*2; i+=step) {
-			actual = getBoard().getChips().get(i);
+			actual =  MainFrame.getChipFromBoard(i);
 			
 			if(actual.owner == Ownership.NONE) {
 				gaps++; target = actual;
