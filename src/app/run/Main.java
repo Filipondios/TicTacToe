@@ -8,6 +8,11 @@ import app.core.engine.ImpossibleCore;
 import app.core.engine.NormalCore;
 import app.frames.MainFrame;
 
+/**
+ * Class where the application is run.
+ * @author Filipondios
+ * @version 28.11.2022
+ */
 public final class Main {
 	
 	public static void main(String[] args) {
