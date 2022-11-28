@@ -6,30 +6,52 @@ import app.core.board.BoardCell;
 import app.core.board.Ownership;
 import app.frames.MainFrame;
 
+/**
+ * Core that implements the normal hardness of the game. It simply checks if the
+ * AI can lose or win. If any of those situations can happen, the makeMove method
+ * must make a move to win or defend. Otherwise, tries to generate a logic move.
+ * For more info, see the makeMove at this Class.
+ * 
+ * @author Filipondios
+ * @version 28.10.2022
+ * @see #makeMove()
+ */
 public final class NormalCore implements Core {
 
+	/**
+	 * <p>As described in this Class, this method checks if there is a situation where
+	 * the AI can win or lose. If any of those situations can happen, the method must
+	 * make a move to win or defend.</p> 
+	 * 
+	 * <p>Otherwise, the algorithm tries to make a move in the surrounding cells of the
+	 * user's last move. If all that cells are occupied, the AI must make a move in a
+	 * random move at the board. This last algorithm is the same as the
+	 * {@link EasyCore#makeMove()} method.</p>
+	 */
 	@Override
 	public void makeMove() {
 		
 		BoardCell target = canWinOrLose();
 		
 		if(target!=null) {
-			
 			target.setCell(Ownership.AI);
 			return;
 		}
 		
-		// Generar posibles celdas donde se haga un movimiento.
-		// Debe ser alrededor de Board.last o si no hay hueco, en una posicion del
-		// tablero aleatoria
+		/* Generate the possible candidate cells in the surrounding cells of the
+		 * user last move, specified by the board. */
+		int chip = MainFrame.getLastMove().boardPosition;
 		
-		target = null;
-		int last = MainFrame.getLastMove().boardPosition;
-		ArrayList<Integer> candidates = new ArrayList<>(Arrays.asList(last-1,last+1,last-3,last+3));
+		ArrayList<Integer> candidates = new ArrayList<>(
+				/* Up = last-3 ; Down = last+3 ; Left = last-1 ; Right = last+1 ;
+				 * Diagonal-left-up = last-4 ;  Diagonal-right.down = last+4 ; 
+				 * Diagonal-right-up: = last-2 ; Diagonal-right-down = last+2 */
+				Arrays.asList(chip-3,chip+3,chip-1,chip+1,chip-4,chip+4,chip-2,chip+2)
+		);
 						
 		for (Integer index : candidates) {
 						
-			try { target = MainFrame.getChipFromBoard(index); }
+			try { target = MainFrame.getCellFromBoard(index); }
 			catch (Exception e) { continue; }
 			
 			if(target.owner == Ownership.NONE) {
@@ -38,48 +60,45 @@ public final class NormalCore implements Core {
 			}
 		}
 		
-		// No hay celdas libres alrededor del ultimo movimiento del usuario.
-		// Hay que obtener una celda del tablero de forma aleatoria.
-		
+		/* At this point, if the function did not return, there are no free cells
+		 * surrounding the last cell marked by the user. Generate a random cell at
+		 * the board, like in the EasyCore makeMove method */
 		boolean let = true;
-		int chip = 0;
 
-		while (let) { // Mientas la casilla calculada este ocupada, seguir el loop
-			chip = (int) (Math.random())<<3; // Generar casilla del tablero aleatoria
-			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1) ? true : false; // Comprobar si esta ocupada
+		while (let) {
+			chip = (int) (Math.random()*8);
+			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1);
 		}
-		MainFrame.game_board.markTile(chip, Ownership.AI); // Marcar casilla como IA (machine)
 	}
 
 	/**
-	 * Funcion que evalua el tablero, y comprueba si puede haber un movimiento que
-	 * gane la partida, que evite que el usuario gane o en oto caso, ninguna de las
-	 * dos anteriores (Situacion sin riesgo ni ganancia).
-	 * 
-	 * @return si existe un movimiento ganador o de defensa se devuleve un objeto
-	 *         {@link BoardCell}
-	 *         que sea una referencia a la celda donde hacer el movimiento, null si
-	 *         no hay peligro ni ganancia.
-	 */
+	* Function that evaluates the board, and checks if there can be a movement that
+	* can win the game, which prevents the user from winning or otherwise, none of the
+	* two previous (Situation without risk or profit).
+	*
+	* @return if there is a winning or defending move an object is returned
+	* {@link BoardCell} that is a reference to the cell where to move, null if
+	* there is no danger or gain.
+	*/
 	private BoardCell canWinOrLose() {
-		// Diagonal izquierda arriba - derecha abajo
+		// Diagonal left up - right down
 		BoardCell target = evaluateInStep(0, 4);
 		if (target != null)
 			return target;
 
-		// Diagonal izquierda arriba - derecha abajo
+		// Diagonal left up - right down
 		target = evaluateInStep(2, 2);
 		if (target != null)
 			return target;
 
-		// Todas las filas
+		// All the rows
 		for (int i = 0; i <= 6; i += 3) {
 			target = evaluateInStep(i, 1);
 			if (target != null)
 				return target;
 		}
 
-		// Todas las columnas
+		// All the columns
 		for (int i = 0; i <= 2; i++) {
 			target = evaluateInStep(i, 3);
 			if (target != null)
@@ -89,20 +108,20 @@ public final class NormalCore implements Core {
 	}
 
 	/**
-	 * Evalua si dadas 3 celdas existe peligro de derrota, posible victoria
-	 * o una situacion de no ganancia.
-	 * @param start Primera celda a evaluar.
-	 * @param step  Salto hasta la siguiente celda (distancia).
-	 * @return Objeto de tipo {@link BoardCell} que hace referencia a la celda del
-	 * tablero donde se debe hacer el movimiento, null si no ha peligro o posible victoria.
-	 */
+	* Private function that evaluates if 3 cells may cause in the next move a win or lose. 
+	* 
+	* @param start First cell to evaluate.
+	* @param step Step to the next cell (distance).
+	* @return Object of type {@link BoardCell} that refers to the board cell where the next
+	* move must be made, null if there is no danger or possible victory.
+	*/
 	private BoardCell evaluateInStep(int start, int step) {
 		
 		BoardCell actual, target = null;
 		int gaps = 0, player = 0, ai = 0;
 		
 		for (int i=start; i<=start+step*2; i+=step) {
-			actual =  MainFrame.getChipFromBoard(i);
+			actual =  MainFrame.getCellFromBoard(i);
 			
 			if(actual.owner == Ownership.NONE) {
 				gaps++; target = actual;
