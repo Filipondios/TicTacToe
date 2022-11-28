@@ -13,7 +13,7 @@ import app.frames.MainFrame;
  * <p>Class that simulates a <i>cell</i> of the Tic-Tac-Toe game board.</p>
  * 
  * @author Filipondios
- * @version 27.11.2022
+ * @version 28.11.2022
  */
 @SuppressWarnings("serial")
 public final class BoardCell extends JPanel {
@@ -25,7 +25,7 @@ public final class BoardCell extends JPanel {
 	*/
 	public Ownership owner = Ownership.NONE;
 
-	/** Relative position on the board that contains it */
+	/** <p>Relative position on the board that contains it</p> */
 	public int boardPosition;
 	
 	/**
@@ -76,8 +76,8 @@ public final class BoardCell extends JPanel {
 	* <p> Gives a value of a player (<i>AI</i> or <i>PLAYER</i>) to the cell only if
 	* this has the value <i>NONE</i>. </p>
 	*
-	* @param Chip Constant of the enum {@link Chip} that indicates if the cell will be
-	* occupy the player or the AI.
+	* @param owner Constant of the enum {@link Ownership} that indicates if the cell will be
+	* occupied the player or the AI.
 	*/
 	public int setCell(Ownership owner) {
 		if (this.owner != Ownership.NONE)
@@ -91,11 +91,11 @@ public final class BoardCell extends JPanel {
 	}
 
 	/**
-	 * <p>Funcion que termina el juego y manda un mensaje con el resultado de la
-	 * partida.</p>
+	 * <p>Function that finishes the game and sends a message with {@link JOptionPane} with
+	 * the game result.</p>
 	 * 
-	 * @param value Valor de la partida. Si la IA gano, entonces value=-1, si el
-	 *        usuario gano, entonces 1, y si hubo empate, 0.
+	 * @param value Value of the game. If the AI won: value=1, if the user won: value=-1.
+	 * Otherwise (it was a draw), value=0.
 	 */
 	private void endGame(int value) {
 		String message = (value == 0) ? "There's a draw :0" : null;
@@ -105,8 +105,8 @@ public final class BoardCell extends JPanel {
 	}
 	
 	/**
-	 * <p>Method that returns the actual BoardCell. Used in the mouselistener -
-	 * Mousepressed method.</p>
+	 * <p>Method that returns the actual BoardCell. Used in the mouse listener -
+	 * Mouse-pressed method.</p>
 	 * 
 	 * @return This BoardCell object.
 	 */
