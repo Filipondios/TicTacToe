@@ -7,10 +7,10 @@ package app.core.board;
  * it was the player. </p>
  *
  * @author Filippondios
- * @version 27.11.2022
+ * @version 28.11.2022
  */
 public enum Ownership {
 	AI,
 	PLAYER,
 	NONE
-};
+}
