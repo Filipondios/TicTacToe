@@ -8,8 +8,8 @@ import javax.swing.JPanel;
  * of the <code>cells</code> from the board, the {@link BoardCell} class is
  * used. Understand cells for each one of the square spaces of the board
  * that players can mark. Both the <code>BoardCell</code> class and <code>this</code>
- * extends {@link JPanel}, so a <code>Board</code> Object contains 9 <code>Boardchips</code>
- * (Jpanels) inside.</p>
+ * extends {@link JPanel}, so a <code>Board</code> Object contains 9 <code>BoardCells</code>
+ * (Panels) inside.</p>
  * 
  * <p> The cells are distributed in the <code>Board</code> numerically like this: </p>
  * 
@@ -35,7 +35,7 @@ import javax.swing.JPanel;
  * in the array of and with which indices each of them can be accessed. </p>
  * 
  * @author Filipondios.
- * @version 27.11.2022
+ * @version 28.11.2022
  * @see BoardCell
  */
 @SuppressWarnings("serial")
@@ -126,10 +126,10 @@ public final class Board extends JPanel {
 
 	/**
 	 * <p>Function that checks if the board is full (There is no <code>BoardCell</code>
-	 * that has no owner (enum owner=NONE)). Usefull if we want to check if there is
+	 * that has no owner (enum owner=NONE)). Useful if we want to check if there is
 	 * a tie in the actual game.</p>
 	 * 
-	 * @return True if the board is full, false if don't.
+	 * @return True if the board is full, false if it isn't.
 	 */
 	public boolean isFull() {
 		for (BoardCell boardCell : cells)
@@ -144,7 +144,7 @@ public final class Board extends JPanel {
 	 * @param index Index of the cell in the actual <code>Board</code>
 	 * @return Cell with a specific index from the board.
 	 */
-	public BoardCell getChip(int index) {
+	public BoardCell getCell(int index) {
 		return this.cells[index];
 	}
 	
@@ -156,15 +156,5 @@ public final class Board extends JPanel {
 	 */
 	public void makeLastMove(BoardCell last_move) {
 		this.user_last_move = last_move;
-	}
-	
-	/**
-	 * <p>Last move getter.</p>
-	 * 
-	 * @return Returns a pointer/reference of type {@link BoardCell} that is the
-	 * user's last move.
-	 */
-	public BoardCell getLastMove() {
-		return this.user_last_move;
 	}
 }
