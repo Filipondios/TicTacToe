@@ -13,7 +13,7 @@ import app.frames.MainFrame;
  * For more info, see the makeMove at this Class.
  * 
  * @author Filipondios
- * @version 28.10.2022
+ * @version 30.10.2022
  * @see #makeMove()
  */
 public final class NormalCore implements Core {
@@ -40,7 +40,7 @@ public final class NormalCore implements Core {
 		
 		/* Generate the possible candidate cells in the surrounding cells of the
 		 * user last move, specified by the board. */
-		int chip = MainFrame.getLastMove().boardPosition;
+		byte chip = MainFrame.getLastMove().boardPosition;
 		
 		ArrayList<Integer> candidates = new ArrayList<>(
 				/* Up = last-3 ; Down = last+3 ; Left = last-1 ; Right = last+1 ;
@@ -66,7 +66,7 @@ public final class NormalCore implements Core {
 		boolean let = true;
 
 		while (let) {
-			chip = (int) (Math.random()*8);
+			chip = (byte) (Math.random()*8);
 			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1);
 		}
 	}
@@ -92,14 +92,14 @@ public final class NormalCore implements Core {
 			return target;
 
 		// All the rows
-		for (int i = 0; i <= 6; i += 3) {
+		for (byte i = 0; i <= 6; i += 3) {
 			target = evaluateInStep(i, 1);
 			if (target != null)
 				return target;
 		}
 
 		// All the columns
-		for (int i = 0; i <= 2; i++) {
+		for (byte i = 0; i <= 2; i++) {
 			target = evaluateInStep(i, 3);
 			if (target != null)
 				return target;
@@ -115,10 +115,10 @@ public final class NormalCore implements Core {
 	* @return Object of type {@link BoardCell} that refers to the board cell where the next
 	* move must be made, null if there is no danger or possible victory.
 	*/
-	private BoardCell evaluateInStep(int start, int step) {
+	private BoardCell evaluateInStep(final int start, final int step) {
 		
 		BoardCell actual, target = null;
-		int gaps = 0, player = 0, ai = 0;
+		byte gaps = 0, player = 0, ai = 0;
 		
 		for (int i=start; i<=start+step*2; i+=step) {
 			actual =  MainFrame.getCellFromBoard(i);
