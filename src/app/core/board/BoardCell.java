@@ -13,9 +13,8 @@ import app.frames.MainFrame;
  * <p>Class that simulates a <i>cell</i> of the Tic-Tac-Toe game board.</p>
  * 
  * @author Filipondios
- * @version 28.11.2022
+ * @version 30.11.2022
  */
-@SuppressWarnings("serial")
 public final class BoardCell extends JPanel {
 
 	/**
@@ -26,7 +25,7 @@ public final class BoardCell extends JPanel {
 	public Ownership owner = Ownership.NONE;
 
 	/** <p>Relative position on the board that contains it</p> */
-	public int boardPosition;
+	public final byte boardPosition;
 	
 	/**
 	* <p> Constructor that creates a cell and assigns it an identifying number
@@ -35,7 +34,7 @@ public final class BoardCell extends JPanel {
 	* 
 	* @param position Relative position in the board that contains this cell.
 	*/
-	public BoardCell(int position) {
+	public BoardCell(final byte position) {
 		this.boardPosition = position;
 
 		this.setBorder(new LineBorder(new Color(209, 177, 154)));
@@ -45,8 +44,7 @@ public final class BoardCell extends JPanel {
 			public void mousePressed(MouseEvent e) {
 
 				/* Comprobar que la casilla no este ocupada */
-				if (owner != Ownership.NONE)
-					return;
+				if (owner != Ownership.NONE) return;
 
 				/* Marcar esta casilla de la propiedad del jugador */
 				setCell(Ownership.PLAYER);
@@ -55,19 +53,15 @@ public final class BoardCell extends JPanel {
 				/* Evaluar si el jugador ha hecho una jugada ganadora */
 				int board_value = MainFrame.evaluateBoard();
 				
-				if (board_value != 0)
-					endGame(board_value);
-				if (MainFrame.boardIsFull())
-					endGame(0);
+				if (board_value != 0) endGame(board_value);
+				if (MainFrame.boardIsFull()) endGame(0);
 
 				/* Marcar esta casilla de la propiedad de la IA */
 				MainFrame.game_core.makeMove();
 
 				/* Evaluar si la IA ha hecho una jugada ganadora */
 				board_value = MainFrame.evaluateBoard();
-				
-				if (board_value != 0)
-					endGame(board_value);
+				if (board_value != 0) endGame(board_value);
 			}
 		});
 	}
@@ -79,7 +73,7 @@ public final class BoardCell extends JPanel {
 	* @param owner Constant of the enum {@link Ownership} that indicates if the cell will be
 	* occupied the player or the AI.
 	*/
-	public int setCell(Ownership owner) {
+	public byte setCell(Ownership owner) {
 		if (this.owner != Ownership.NONE)
 			return -1;
 		this.owner = owner;
@@ -97,7 +91,7 @@ public final class BoardCell extends JPanel {
 	 * @param value Value of the game. If the AI won: value=1, if the user won: value=-1.
 	 * Otherwise (it was a draw), value=0.
 	 */
-	private void endGame(int value) {
+	private void endGame(final int value) {
 		String message = (value == 0) ? "There's a draw :0" : null;
 		JOptionPane.showMessageDialog(null,
 				(message == null) ? ((value == -1) ? "You won :)" : "You lose :(") : message);
