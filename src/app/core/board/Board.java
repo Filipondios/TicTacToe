@@ -35,10 +35,9 @@ import javax.swing.JPanel;
  * in the array of and with which indices each of them can be accessed. </p>
  * 
  * @author Filipondios.
- * @version 28.11.2022
+ * @version 30.11.2022
  * @see BoardCell
  */
-@SuppressWarnings("serial")
 public final class Board extends JPanel {
 
 	/** <p>Array with the <code>(9)</code> Board cells</p> */
@@ -51,7 +50,7 @@ public final class Board extends JPanel {
 	public Board() {
 		super(new GridLayout(3,3));
 		
-		for (int i = 0; i < 9; i++) {
+		for (byte i = 0; i < 9; i++) {
 			cells[i] = new BoardCell(i);
 			this.add(cells[i]);
 		}
@@ -102,13 +101,13 @@ public final class Board extends JPanel {
 	* wins), 0 if nobody wins and -2 if there is a total tie (there are no more 
 	* free cells and there is a tie)
 	*/
-	private int evaluateInStep(int start, int step) {
+	private int evaluateInStep(final int start, final int step) {
 		for (int i = start; i <= step + start; i += step) {
 			Ownership pre_owner = this.cells[i-step].owner;
 			if (pre_owner == Ownership.NONE || this.cells[i].owner != pre_owner)
 				return 0;
 			if (i == start + step)
-				return (pre_owner == Ownership.AI) ? 1 : -1;
+				return (pre_owner == Ownership.AI)? 1 : -1;
 		}
 		return 0;
 	}
@@ -120,7 +119,7 @@ public final class Board extends JPanel {
 	* @param Chip Enum constant {@link BoardCell} that identifies which player
 	* has occupied the cell.
 	*/
-	public int markTile(int tile_number, Ownership Chip) {
+	public int markTile(final int tile_number, final Ownership Chip) {
 		return cells[tile_number].setCell(Chip);
 	}
 
@@ -144,7 +143,7 @@ public final class Board extends JPanel {
 	 * @param index Index of the cell in the actual <code>Board</code>
 	 * @return Cell with a specific index from the board.
 	 */
-	public BoardCell getCell(int index) {
+	public BoardCell getCell(final int index) {
 		return this.cells[index];
 	}
 	
@@ -154,7 +153,7 @@ public final class Board extends JPanel {
 	 * 
 	 * @param last_move Pointer to the last cell that the user touched.
 	 */
-	public void makeLastMove(BoardCell last_move) {
+	public void makeLastMove(final BoardCell last_move) {
 		this.user_last_move = last_move;
 	}
 }
