@@ -9,7 +9,7 @@ import app.frames.MainFrame;
  * implementation, see the makeMove method at this class.
  *  
  * @author Filipondios
- * @version 28.11.2022
+ * @version 30.11.2022
  * @see #makeMove()
  */
 public final class EasyCore implements Core {
@@ -22,10 +22,10 @@ public final class EasyCore implements Core {
 	@Override
 	public void makeMove() {
 		boolean let = true;
-		int chip;
+		byte chip;
 
 		while (let) { // While the calculated cell is occupied, stay in the loop
-			chip = (int) (Math.random()*8); // Generate a random index of a board cell (0-8)
+			chip = (byte) (Math.random()*8); // Generate a random index of a board cell (0-8)
 			let = (MainFrame.game_board.markTile(chip, Ownership.AI) == -1); //Check if its occupied
 		}
 	}
