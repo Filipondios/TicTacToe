@@ -25,10 +25,10 @@ What more do you want?</h4>
 ## About 📚
 Everyone knows or has ever played the famous game <b><i>Tic-tac-toe</i></b>. This is a different version, much simpler, cleaner and beautiful.
 This game has 3 different difficulty levels incorporated, which are:
-  - <b>`Easy`</b>: The machine plays its moves in random squares, so its pretty easy to win.
-  - <b>`Normal`</b>: The machine makes its moves randomly inside positions that avoid you to win. If it has the opportunnity to win, it does so.
-  - <b>`Impossible`</b>: This is a AI (kind of). The machine generates all the possible moves that it can do or you can do and it explores them. Then, the
-    AI selects the move that has the most promising future. Deffinetly, its impossible to beat this AI but you can tie. 
+  - <b>`Random`</b>: The machine plays its moves in random squares, so its pretty easy to win.
+  - <b>`Pseudo-Random`</b>: The machine makes its moves randomly inside positions that avoid you to win. If it has the opportunnity to win, it does so.
+  - <b>`Custom`</b>: The machine generates all the possible moves that it can do or you can do and it explores them till a specified depth by the user. Then, the
+    AI selects the move that has the most promising future.
 
 #### <ins>The current finished levels are:</ins> `Easy`, `Normal`
 
