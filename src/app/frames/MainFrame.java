@@ -10,7 +10,7 @@ import app.core.engine.Core;
 /**
  * Main frame of the application. Contains a board and its cells.
  * @author Filipondios
- * @version 30.11.2022
+ * @version 01.12.2022
  * @see Board
  * @see BoardCell
  */
