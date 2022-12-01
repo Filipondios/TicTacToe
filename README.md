@@ -1,4 +1,4 @@
-# TicTacToe (Not Finished)
+# TicTacToe
 
 <div id="badges" align="center">
   <a> <img src="https://img.shields.io/github/license/filipondios/tictactoe" alt="License"/> </a>
@@ -7,7 +7,7 @@
   <a> <img src="https://img.shields.io/github/last-commit/filipondios/tictactoe"> </a>
 </div>
 
-<h4 align="center">The classic <b><a href="https://en.wikipedia.org/wiki/Tic-tac-toe">Tic-tac-toe</a></b> game with AI made in Java. Simpler. Cleaner. Beautiful. 
+<h4 align="center">The classic <b><a href="https://en.wikipedia.org/wiki/Tic-tac-toe">Tic-tac-toe</a></b> game with an AI made in Java. Simpler. Cleaner. Beautiful. 
 What more do you want?</h4>
 
 <p align="center">
@@ -25,18 +25,17 @@ What more do you want?</h4>
 ## About 📚
 Everyone knows or has ever played the famous game <b><i>Tic-tac-toe</i></b>. This is a different version, much simpler, cleaner and beautiful.
 This game has 3 different difficulty levels incorporated, which are:
-  - <b>`Random`</b>: The machine plays its moves in random squares, so its pretty easy to win.
-  - <b>`Pseudo-Random`</b>: The machine makes its moves randomly inside positions that avoid you to win. If it has the opportunnity to win, it does so.
-  - <b>`Custom`</b>: The machine generates all the possible moves that it can do or you can do and it explores them till a specified depth by the user. Then, the
-    AI selects the move that has the most promising future.
-
-#### <ins>The current finished levels are:</ins> `Random`, `Pseudo-Random`
+  - <b>`Easy`</b>: The machine plays its moves in random cells, so its pretty easy to win.
+  - <b>`Normal`</b>: The machine makes its moves randomly inside positions that avoid you to win. If it has the opportunnity to win, it does so.
+  - <b>`Impossible`</b>: The machine generates all the possible moves that it can do or you can do and it explores them all. Then, the
+    AI selects the move that has the most promising future (best move).
 
 <a name="download"></a>
 
 ## Download 📦
-You can download the newer version of this game with <a href="">this link</a>. You can also run `git clone https://github.com/Filipondios/TicTacToe.git` or similar
-if you want full access to the code, as usual.
+- Use <a href="">this link</a> or run `git clone https://github.com/Filipondios/TicTacToe.git` or similar to have full access to the code, as usual.
+
+- If you want to download a specific version of the app, check all the releases at <a href="https://github.com/Filipondios/TicTacToe/releases">this link</a> or in the Releases section at this repository. Else, if you want the latest version, check it also at the first occurence of the releases section. 
 
 <a name="license"></a>
 
