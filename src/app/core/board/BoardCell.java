@@ -7,13 +7,15 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import app.core.engine.ImpossibleCore;
 import app.frames.MainFrame;
 
 /**
  * <p>Class that simulates a <i>cell</i> of the Tic-Tac-Toe game board.</p>
  * 
  * @author Filipondios
- * @version 30.11.2022
+ * @version 01.12.2022
  */
 public final class BoardCell extends JPanel {
 
@@ -25,7 +27,7 @@ public final class BoardCell extends JPanel {
 	public Ownership owner = Ownership.NONE;
 
 	/** <p>Relative position on the board that contains it</p> */
-	public final byte boardPosition;
+	public final int boardPosition;
 	
 	/**
 	* <p> Constructor that creates a cell and assigns it an identifying number
@@ -34,7 +36,7 @@ public final class BoardCell extends JPanel {
 	* 
 	* @param position Relative position in the board that contains this cell.
 	*/
-	public BoardCell(final byte position) {
+	public BoardCell(final int position) {
 		this.boardPosition = position;
 
 		this.setBorder(new LineBorder(new Color(209, 177, 154)));
@@ -44,26 +46,38 @@ public final class BoardCell extends JPanel {
 			public void mousePressed(MouseEvent e) {
 
 				/* Comprobar que la casilla no este ocupada */
-				if (owner != Ownership.NONE) return;
+				if (owner != Ownership.NONE || !MainFrame.game_board.isTouchable) return;
 
 				/* Marcar esta casilla de la propiedad del jugador */
-				setCell(Ownership.PLAYER);
+				setCell(Ownership.PLAYER, MainFrame.game_board);
 				MainFrame.setLastMove(mirror());
 								
 				/* Evaluar si el jugador ha hecho una jugada ganadora */
 				int board_value = MainFrame.evaluateBoard();
 				
-				if (board_value != 0) endGame(board_value);
+				if (board_value != -2) endGame(board_value);
 				if (MainFrame.boardIsFull()) endGame(0);
 
+				MainFrame.game_board.isTouchable = false;
 				/* Marcar esta casilla de la propiedad de la IA */
 				MainFrame.game_core.makeMove();
+				MainFrame.game_board.isTouchable = true;
 
 				/* Evaluar si la IA ha hecho una jugada ganadora */
 				board_value = MainFrame.evaluateBoard();
-				if (board_value != 0) endGame(board_value);
+				if (board_value != -2) endGame(board_value);
 			}
 		});
+	}
+	
+	/**
+	 * Creates the copy of a <code>BoardCell</code>. Used only at {@link ImpossibleCore}
+	 * when creating Nodes. 
+	 * @param cell Cell to copy
+	 */
+	public BoardCell(BoardCell cell) {
+		this.boardPosition = cell.boardPosition;
+		this.owner = cell.owner;
 	}
 
 	/**
@@ -73,7 +87,7 @@ public final class BoardCell extends JPanel {
 	* @param owner Constant of the enum {@link Ownership} that indicates if the cell will be
 	* occupied the player or the AI.
 	*/
-	public byte setCell(Ownership owner) {
+	public int setCell(Ownership owner, Board board) {
 		if (this.owner != Ownership.NONE)
 			return -1;
 		this.owner = owner;
@@ -82,6 +96,12 @@ public final class BoardCell extends JPanel {
 		else
 			this.setBackground(new Color(237, 216, 192));
 		return 0;
+	}
+	
+	/** Sets a cells to a value without changing the panel colour.
+	 * Use only when modifying the board without the user knowledge. */
+	public void setCellNoColor(Ownership owner) {
+		this.owner = owner;
 	}
 
 	/**
@@ -106,5 +126,10 @@ public final class BoardCell extends JPanel {
 	 */
 	private BoardCell mirror() {
 		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + "@" + Integer.toHexString(hashCode());
 	}
 }
