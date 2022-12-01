@@ -33,8 +33,9 @@ This game has 3 different difficulty levels incorporated, which are:
 <a name="download"></a>
 
 ## Download 📦
-You can use <a href="">this link</a>. You can also run `git clone https://github.com/Filipondios/TicTacToe.git` or similar
-to have full access to the code, as usual.
+- Use <a href="">this link</a> or run `git clone https://github.com/Filipondios/TicTacToe.git` or similar to have full access to the code, as usual.
+
+- If you want to download a specific version of the app, check all the releases at <a href="https://github.com/Filipondios/TicTacToe/releases">this link</a> or in the Releases section at this repository. Else, if you want the latest version, check it also at the first occurence of the releases section. 
 
 <a name="license"></a>
 
