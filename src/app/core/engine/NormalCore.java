@@ -34,13 +34,13 @@ public final class NormalCore implements Core {
 		BoardCell target = canWinOrLose();
 		
 		if(target!=null) {
-			target.setCell(Ownership.AI);
+			target.setCell(Ownership.AI, MainFrame.game_board);
 			return;
 		}
 		
 		/* Generate the possible candidate cells in the surrounding cells of the
 		 * user last move, specified by the board. */
-		byte chip = MainFrame.getLastMove().boardPosition;
+		int chip = MainFrame.getLastMove().boardPosition;
 		
 		ArrayList<Integer> candidates = new ArrayList<>(
 				/* Up = last-3 ; Down = last+3 ; Left = last-1 ; Right = last+1 ;
@@ -55,7 +55,7 @@ public final class NormalCore implements Core {
 			catch (Exception e) { continue; }
 			
 			if(target.owner == Ownership.NONE) {
-				target.setCell(Ownership.AI);
+				target.setCell(Ownership.AI, MainFrame.game_board);
 				return;
 			}
 		}
