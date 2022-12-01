@@ -35,7 +35,7 @@ import javax.swing.JPanel;
  * in the array of and with which indices each of them can be accessed. </p>
  * 
  * @author Filipondios.
- * @version 30.11.2022
+ * @version 01.12.2022
  * @see BoardCell
  */
 public final class Board extends JPanel {
@@ -45,22 +45,27 @@ public final class Board extends JPanel {
 	
 	/** <p>Last chip touched/marked by the user</p> */
 	public BoardCell user_last_move;
-
+	
+	/** Indicates if the board is touchable by the user */
+	public boolean isTouchable = true;
+	
 	/** <p>Creates a Board and adds to it 9 cells</p> */
 	public Board() {
 		super(new GridLayout(3,3));
 		
-		for (byte i = 0; i < 9; i++) {
+		for (int i = 0; i < 9; i++) {
 			cells[i] = new BoardCell(i);
 			this.add(cells[i]);
 		}
 	}
-
+	
 	/**
 	* <p>Function that evaluates the state of the current board.</p>
 	* 
 	* @return 1 if the AI ​​wins in the current board state, -1 if the AI ​​loses
-	* (the user wins) and 0 if no one wins.
+	* (the user wins), 0 if there's a draw and -2 if else (no one winning, no draw).
+	* Understand the draw as a full board (there are no more moves available), and
+	* none of the players won.
 	*/
 	public int evaluate() {
 
@@ -87,7 +92,7 @@ public final class Board extends JPanel {
 			if (result != 0)
 				return result;
 		}
-		return 0;
+		return isFull()? 0 : -2;
 	}
 
 	/**
@@ -98,8 +103,7 @@ public final class Board extends JPanel {
 	* @param start Second cell to evaluate.
 	* @param step Step to the next cell (distance).
 	* @return 1 if the AI ​​wins in the current board state, -1 if the AI ​​loses (user
-	* wins), 0 if nobody wins and -2 if there is a total tie (there are no more 
-	* free cells and there is a tie)
+	* wins), 0 if nobody wins.
 	*/
 	private int evaluateInStep(final int start, final int step) {
 		for (int i = start; i <= step + start; i += step) {
@@ -120,9 +124,15 @@ public final class Board extends JPanel {
 	* has occupied the cell.
 	*/
 	public int markTile(final int tile_number, final Ownership Chip) {
-		return cells[tile_number].setCell(Chip);
+		return this.cells[tile_number].setCell(Chip, this);
 	}
 
+	/** Sets a cells to a value without changing the panel colour.
+	 * Use only when modifying the board without the user knowledge. */
+	public void markTileNoColor(final int tile_number, final Ownership owner) {
+		this.cells[tile_number].setCellNoColor(owner);
+	}
+	
 	/**
 	 * <p>Function that checks if the board is full (There is no <code>BoardCell</code>
 	 * that has no owner (enum owner=NONE)). Useful if we want to check if there is
