@@ -61,11 +61,11 @@ public final class BoardCell extends JPanel {
 				MainFrame.game_board.isTouchable = false;
 				/* Marcar esta casilla de la propiedad de la IA */
 				MainFrame.game_core.makeMove();
-				MainFrame.game_board.isTouchable = true;
 
 				/* Evaluar si la IA ha hecho una jugada ganadora */
 				board_value = MainFrame.evaluateBoard();
 				if (board_value != -2) endGame(board_value);
+				MainFrame.game_board.isTouchable = true;
 			}
 		});
 	}
