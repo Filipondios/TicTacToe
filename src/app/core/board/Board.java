@@ -46,7 +46,7 @@ public final class Board extends JPanel {
 	/** <p>Last chip touched/marked by the user</p> */
 	public BoardCell user_last_move;
 	
-	/** Indicates if the board is touchable by the user */
+	/** <p>Indicates if the board is touchable by the user</p> */
 	public boolean isTouchable = true;
 	
 	/** <p>Creates a Board and adds to it 9 cells</p> */
