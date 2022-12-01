@@ -30,7 +30,7 @@ This game has 3 different difficulty levels incorporated, which are:
   - <b>`Custom`</b>: The machine generates all the possible moves that it can do or you can do and it explores them till a specified depth by the user. Then, the
     AI selects the move that has the most promising future.
 
-#### <ins>The current finished levels are:</ins> `Easy`, `Normal`
+#### <ins>The current finished levels are:</ins> `Random`, `Pseudo-Random`
 
 <a name="download"></a>
 
